@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>𝐑𝐞𝐠𝐢𝐬𝐭𝐞𝐫 - 𝐄𝐘𝐄ᵀᴹ</title>
+<link rel="icon" type="image/png" href="pics/1.png">
+<link rel="stylesheet" href="css/shared.css" />
+<link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+<div id="pageLoader" class="page-loader"><div class="loader-logo">eye</div><div class="loader-bar"></div></div>
+<div id="navbar-container"></div>
+
+<main class="login-page">
+  <div class="login-card">
+    <div class="login-logo">eye</div>
+    <div class="login-sub">Create your account</div>
+    <form onsubmit="submitRegister(event)">
+      <div class="login-field">
+        <label class="login-label" for="regName">Full name</label>
+        <input class="login-input" id="regName" type="text" autocomplete="name" required />
+      </div>
+      <div class="login-field">
+        <label class="login-label" for="regEmail">Email</label>
+        <input class="login-input" id="regEmail" type="email" autocomplete="email" required />
+      </div>
+      <div class="login-field">
+        <label class="login-label" for="regPass">Password</label>
+        <input class="login-input" id="regPass" type="password" autocomplete="new-password" required minlength="6" />
+      </div>
+      <div class="login-field">
+        <label class="login-label" for="regPass2">Confirm password</label>
+        <input class="login-input" id="regPass2" type="password" autocomplete="new-password" required minlength="6" />
+      </div>
+      <div id="registerError"></div>
+      <div id="registerSuccess" class="login-hint" style="color:var(--gray-300);margin-bottom:12px"></div>
+      <button type="submit" class="btn btn-primary" id="registerSubmit" style="width:100%;margin-top:8px;padding:16px">Create account</button>
+    </form>
+    <p class="login-hint" style="text-align:center;margin-top:24px;margin-bottom:0">
+      Already have an account? <a href="login.html" style="color:var(--gold);text-decoration:none">Sign in</a>
+    </p>
+  </div>
+</main>
+
+<div id="footer-container"></div>
+<div class="toast" id="toast"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/register.js"></script>
+</body>
+</html>

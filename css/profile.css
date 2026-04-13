@@ -1,0 +1,137 @@
+.profile-wrap { max-width: 1200px; margin: 0 auto; padding: calc(var(--nav-h) + 48px) 48px 80px; }
+body.has-marquee .profile-wrap { padding-top: calc(var(--nav-h) + 36px + 48px); }
+.profile-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 60px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--gray-200);
+}
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.profile-name {
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+.profile-email { font-size: 12px; color: var(--gray-500); letter-spacing: 0.1em; margin-top: 4px; }
+.profile-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.profile-admin-link { text-decoration: none; }
+.profile-role {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 12px;
+  border: 1px solid var(--gray-200);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.profile-card {
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  padding: 40px;
+}
+.profile-card-title {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+}
+.info-field { margin-bottom: 24px; }
+.info-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 6px;
+}
+.info-input {
+  width: 100%;
+  padding: 12px 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid var(--gray-200);
+  background: transparent;
+  outline: none;
+  transition: var(--transition-fast);
+  font-weight: 300;
+  color: var(--white);
+}
+.info-input:focus { border-color: var(--white); }
+.edit-actions { display: flex; gap: 12px; margin-top: 8px; }
+
+.order-preview { border-bottom: 1px solid var(--gray-200); padding: 20px 0; }
+.order-preview:last-child { border-bottom: none; }
+.order-preview-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.order-id { font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.1em; font-weight: 500; color: var(--white); }
+.order-status { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; }
+.status-Pending { background: #3d3420; color: #f0d78c; }
+.status-Processing { background: #1a2a3d; color: #a8c8ff; }
+.status-Shipped { background: #1a2e24; color: #9dceb5; }
+.status-Delivered { background: #2a2a2a; color: #ccc; }
+.status-Returned { background: #3d1a1f; color: #f0a8a8; }
+.order-date { font-size: 11px; color: var(--gray-500); }
+.order-total { font-size: 14px; font-family: var(--font-serif); color: var(--white); }
+
+.wishlist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.wishlist-item { position: relative; cursor: pointer; }
+.wishlist-item img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+.wishlist-item-name { font-size: 12px; font-family: var(--font-serif); margin-top: 8px; color: var(--white); }
+.wishlist-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--white);
+  border: none;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--gray-200);
+  margin-bottom: 40px;
+}
+.ps-item { background: var(--gray-100); padding: 32px; border: 1px solid var(--gray-200); }
+.ps-num { font-family: var(--font-serif); font-size: 36px; font-weight: 300; color: var(--white); }
+.ps-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-500); margin-top: 4px; }
+
+@media (max-width: 768px) {
+  .profile-wrap { padding: calc(var(--nav-h) + 32px) 20px 60px; }
+  .profile-grid { grid-template-columns: 1fr; }
+  .profile-stats { grid-template-columns: 1fr 1fr; }
+  .profile-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
