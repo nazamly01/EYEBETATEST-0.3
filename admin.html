@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>𝐄𝐘𝐄 𝐒𝐲𝐬𝐭𝐞𝐦ᵀᴹ</title>
+<link rel="icon" type="image/png" href="pics/1.png">
+<link rel="stylesheet" href="css/shared.css" />
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+<div id="pageLoader" class="page-loader"><div class="loader-logo">eye</div><div class="loader-bar"></div></div>
+
+<!-- LOGIN (shown only when not authenticated as admin) -->
+<div class="admin-login" id="adminLogin">
+  <div class="login-card">
+    <div class="login-logo">eye</div>
+    <div class="login-sub">Admin Dashboard</div>
+    <p style="color:var(--gray-500);font-size:13px;margin-bottom:20px;line-height:1.6">Sign in with Supabase. Your user must have <code style="color:var(--gold)">role = 'admin'</code> in <strong>public.profiles</strong>. If the panel loads but saves fail, run the latest <code>supabase/EYE_apply_complete.sql</code> in the SQL Editor (RLS policies).</p>
+    <a class="btn btn-gold" href="login.html?return=admin.html" style="display:block;text-align:center;width:100%;padding:16px;text-decoration:none">Sign In</a>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-wrap" id="adminWrap">
+  <aside class="admin-sidebar">
+    <div class="admin-logo">eye <span>ADMIN</span></div>
+    <a class="admin-home-link" href="index.html" title="Storefront home">← Home</a>
+    <nav class="admin-nav">
+      
+      <div class="admin-nav-item active" onclick="showPage('dashboard',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="admin-nav-item" onclick="showPage('analytics',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 12l4-4 4 4 6-6"/><path d="M21 16V9"/></svg>
+        Analytics
+      </div>
+      <div class="admin-nav-item" onclick="showPage('products',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+        Products
+      </div>
+      <div class="admin-nav-item" onclick="showPage('orders',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        Orders
+      </div>
+      <div class="admin-nav-item" onclick="showPage('users',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Users
+      </div>
+      <div class="admin-nav-item" onclick="showPage('coupons',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Coupons
+      </div>
+      <div class="admin-nav-item" onclick="showPage('accounting',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Accounting
+      </div>
+      <div class="admin-nav-item" onclick="showPage('shipping',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 16 11 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Shipping
+      </div>
+      <div class="admin-nav-item" onclick="showPage('contact-admin',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+        Contact page
+      </div>
+      <div class="admin-nav-item" onclick="showPage('settings',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <button onclick="adminLogout()" style="background:none;border:none;color:var(--gray-500);font-size:11px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;padding:0;transition:var(--transition-fast)" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--gray-500)'">← Logout</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- DASHBOARD -->
+    <div class="admin-page active" id="page-dashboard">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Dashboard</h1>
+        <span style="font-size:12px;color:var(--gray-500);letter-spacing:.1em" id="dashDate"></span>
+      </div>
+      <div class="stat-cards" id="dashStats"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Revenue Chart</span></div>
+          <div class="chart-wrap" id="revenueChart"></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Recent Orders</span></div>
+          <div id="recentOrdersTable" style="padding:0 8px 8px"></div>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Best Sellers</span></div>
+        <table id="bestSellersTable"></table>
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="admin-page" id="page-analytics">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Analytics</h1>
+        <span style="font-size:12px;color:var(--gray-500)">Sales &amp; orders from your database</span>
+      </div>
+      <div class="stat-cards" id="analyticsStats"></div>
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px">
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Revenue — last 30 days</span></div>
+          <div class="chart-wrap chart-wrap-tall" id="analyticsRevenue30"></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Orders by status</span></div>
+          <div class="chart-wrap chart-wrap-tall" id="analyticsStatusChart"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Payment methods (count)</span></div>
+          <div class="chart-wrap" id="analyticsPaymentChart"></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Top products by revenue</span></div>
+          <div style="padding:12px 20px 20px;overflow-x:auto"><table id="analyticsTopProducts"></table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT (storefront) -->
+    <div class="admin-page" id="page-contact-admin">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Contact page</h1>
+        <a href="contact.html" target="_blank" rel="noopener" class="btn btn-outline" style="text-decoration:none">Open live page</a>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header"><span class="admin-card-title">Contact content (<code>site_settings.contact_page</code>)</span></div>
+        <div style="padding:20px 28px 28px">
+          <p style="font-size:12px;color:var(--gray-500);margin-bottom:16px;line-height:1.6">Shown on <strong>contact.html</strong>. Set <code>email</code> so the form can open the customer’s mail client addressed to you.</p>
+          <textarea class="form-textarea" id="contactPageJson" rows="14" style="font-family:monospace;font-size:11px"></textarea>
+          <button type="button" class="btn btn-gold" style="margin-top:12px" onclick="saveContactPageJson()">Save contact page</button>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Incoming messages</span></div>
+        <div style="padding:20px 28px 28px">
+          <div id="contactMessagesTable"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="admin-page" id="page-products">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Products</h1>
+        <button class="btn btn-gold" onclick="openProductModal(null)">+ Add Product</button>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <span class="admin-card-title" id="productCount">Products</span>
+          <input type="text" style="padding:8px 14px;border:1px solid var(--gray-200);background:var(--gray-200);color:var(--white);font-size:12px;outline:none;width:220px" placeholder="Search products..." oninput="searchProducts(this.value)" />
+        </div>
+        <div style="overflow-x:auto"><table id="productsTable"></table></div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="admin-page" id="page-orders">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Orders</h1>
+      </div>
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="filterAdminOrders('all',this)">All</button>
+        <button class="admin-tab" onclick="filterAdminOrders('Pending',this)">Pending</button>
+        <button class="admin-tab" onclick="filterAdminOrders('Processing',this)">Processing</button>
+        <button class="admin-tab" onclick="filterAdminOrders('Shipped',this)">Shipped</button>
+        <button class="admin-tab" onclick="filterAdminOrders('Delivered',this)">Delivered</button>
+        <button class="admin-tab" onclick="filterAdminOrders('Returned',this)">Returned</button>
+      </div>
+      <div class="admin-card">
+        <div style="overflow-x:auto"><table id="ordersTable"></table></div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="admin-page" id="page-users">
+      <div class="admin-topbar"><h1 class="admin-page-title">Users</h1></div>
+      <div class="admin-card">
+        <div style="overflow-x:auto"><table id="usersTable"></table></div>
+      </div>
+    </div>
+
+    <!-- COUPONS -->
+    <div class="admin-page" id="page-coupons">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Coupons</h1>
+        <button class="btn btn-gold" onclick="openCouponModal()">+ Create Coupon</button>
+      </div>
+      <div class="admin-card">
+        <div style="overflow-x:auto"><table id="couponsTable"></table></div>
+      </div>
+    </div>
+
+    <!-- ACCOUNTING -->
+    <div class="admin-page" id="page-accounting">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Accounting</h1>
+        <button class="btn btn-gold" onclick="openExpenseModal()">+ Add Expense</button>
+      </div>
+      <div class="stat-cards" id="accountingStats" style="grid-template-columns:repeat(3,1fr)"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px">
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Revenue by Month</span></div>
+          <div class="chart-wrap" id="revenueChart2"></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header"><span class="admin-card-title">Expenses by Category</span></div>
+          <div class="chart-wrap" id="expenseChart"></div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header"><span class="admin-card-title">Expenses Log</span></div>
+        <table id="expensesTable"></table>
+      </div>
+    </div>
+
+    <!-- SHIPPING -->
+    <div class="admin-page" id="page-shipping">
+      <div class="admin-topbar">
+        <h1 class="admin-page-title">Shipping</h1>
+        <button type="button" class="btn btn-gold" onclick="saveShippingFromEditor()">Save shipping rates</button>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header"><span class="admin-card-title">Governorates &amp; cities</span></div>
+        <div style="padding:20px 28px 28px">
+          <div id="shippingEditorMount"></div>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Raw JSON (<code>shipping_zones_json</code>)</span></div>
+        <div style="padding:20px 28px 28px">
+          <textarea class="form-textarea" id="shippingZonesJson" rows="14" style="font-family:monospace;font-size:11px"></textarea>
+          <button type="button" class="btn btn-outline" style="margin-top:12px" onclick="saveShippingZonesJson()">Save from JSON only</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-page" id="page-settings">
+      <div class="admin-topbar"><h1 class="admin-page-title">Settings</h1></div>
+      <div class="admin-card">
+        <div class="admin-card-header"><span class="admin-card-title">Announcements (marquee)</span></div>
+        <div style="padding:20px 28px 28px">
+          <p style="font-size:12px;color:var(--gray-500);margin-bottom:16px">Active rows appear on the storefront. If none are active, legacy <code>marquee_text</code> in site settings is used.</p>
+          <div id="announcementsAdminTable"></div>
+          <button type="button" class="btn btn-gold" style="margin-top:16px" onclick="openAnnouncementModal(null)">+ Add announcement</button>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Navigation links</span></div>
+        <div style="padding:20px 28px 28px">
+          <div id="navLinksAdminTable"></div>
+          <button type="button" class="btn btn-gold" style="margin-top:16px" onclick="openNavModal(null)">+ Add link</button>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Homepage JSON (<code>site_settings.homepage</code>)</span></div>
+        <div style="padding:20px 28px 28px">
+          <p style="font-size:12px;color:var(--gray-500);margin-bottom:16px;line-height:1.6">
+            Image lists (one URL per line) merge into <code>hero.imageUrls</code>, <code>shop.heroImageUrls</code>, and <code>split.imageUrls</code>, then save. Leave a field empty to skip.
+          </p>
+          <div style="display:grid;gap:14px;margin-bottom:16px;max-width:720px">
+            <div class="form-field full">
+              <label class="form-label">Home hero — image URLs (or upload)</label>
+              <div class="admin-upload-row">
+                <label class="btn btn-outline admin-upload-btn">Upload images<input type="file" accept="image/*" multiple style="display:none" onchange="siteImageUpload(event,'hero')" /></label>
+                <span class="admin-upload-hint">JPEG / PNG — URLs are appended below</span>
+              </div>
+              <textarea class="form-textarea" id="heroImageUrlsLines" rows="3" style="font-family:monospace;font-size:11px" placeholder="https://…"></textarea>
+            </div>
+            <div class="form-field full">
+              <label class="form-label">Shop hero — background image URLs (or upload)</label>
+              <div class="admin-upload-row">
+                <label class="btn btn-outline admin-upload-btn">Upload images<input type="file" accept="image/*" multiple style="display:none" onchange="siteImageUpload(event,'shop')" /></label>
+                <span class="admin-upload-hint">JPEG / PNG</span>
+              </div>
+              <textarea class="form-textarea" id="shopHeroImageUrlsLines" rows="3" style="font-family:monospace;font-size:11px" placeholder="https://…"></textarea>
+            </div>
+            <div class="form-field full">
+              <label class="form-label">Split section — image URLs (or upload)</label>
+              <div class="admin-upload-row">
+                <label class="btn btn-outline admin-upload-btn">Upload images<input type="file" accept="image/*" multiple style="display:none" onchange="siteImageUpload(event,'split')" /></label>
+                <span class="admin-upload-hint">JPEG / PNG</span>
+              </div>
+              <textarea class="form-textarea" id="splitImageUrlsLines" rows="3" style="font-family:monospace;font-size:11px" placeholder="https://…"></textarea>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline" style="margin-bottom:12px" onclick="mergeHomepageImageListsIntoJson()">Apply image lists to JSON (preview)</button>
+          <button type="button" class="btn btn-gold" style="margin-right:8px" onclick="mergeHomepageImageListsAndSave()">Save image lists to homepage</button>
+          <textarea class="form-textarea" id="homepageJson" rows="14" style="font-family:monospace;font-size:11px;margin-top:16px"></textarea>
+          <button type="button" class="btn btn-gold" style="margin-top:12px" onclick="saveHomepageJson()">Save homepage JSON</button>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Legal — returns policy JSON (<code>site_settings.legal_returns</code>)</span></div>
+        <div style="padding:20px 28px 28px">
+          <div class="form-field full" style="margin-bottom:12px">
+            <label class="form-label">Returns policy text (easy editor)</label>
+            <textarea class="form-textarea" id="legalReturnsBodySimple" rows="8" placeholder="Write policy text here..."></textarea>
+            <button type="button" class="btn btn-outline" style="margin-top:10px" onclick="saveLegalReturnsBodySimple()">Save text only</button>
+          </div>
+          <textarea class="form-textarea" id="legalReturnsJson" rows="10" style="font-family:monospace;font-size:11px"></textarea>
+          <button type="button" class="btn btn-gold" style="margin-top:12px" onclick="saveLegalReturnsJson()">Save legal JSON</button>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Shipping & legacy marquee</span></div>
+        <div style="padding:20px 28px 28px;display:grid;gap:16px;max-width:420px">
+          <div class="form-field">
+            <label class="form-label">Free shipping threshold (EGP)</label>
+            <input class="form-input" id="shipThreshold" type="number" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Legacy marquee (single field, · separated)</label>
+            <textarea class="form-textarea" id="marqueeText" rows="2"></textarea>
+          </div>
+          <button type="button" class="btn btn-gold" onclick="saveShippingAndMarquee()">Save</button>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Checkout — Telda &amp; InstaPay</span></div>
+        <div style="padding:20px 28px 28px;max-width:520px">
+          <p style="font-size:12px;color:var(--gray-500);margin-bottom:16px;line-height:1.6">Shown when a customer selects Telda or InstaPay at checkout (copy / wallet number).</p>
+          <div class="form-field full">
+            <label class="form-label">Telda number or wallet</label>
+            <input class="form-input" id="walletTelda" placeholder="e.g. 0100…" />
+          </div>
+          <div class="form-field full">
+            <label class="form-label">InstaPay (phone or address)</label>
+            <input class="form-input" id="walletInsta" placeholder="e.g. name@instapay" />
+          </div>
+          <button type="button" class="btn btn-gold" style="margin-top:8px" onclick="savePaymentWallets()">Save payment details</button>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:24px">
+        <div class="admin-card-header"><span class="admin-card-title">Categories</span></div>
+        <div style="padding:20px 28px 28px">
+          <div id="categoriesAdminTable"></div>
+          <button type="button" class="btn btn-gold" style="margin-top:16px" onclick="openCategoryModal(null)">+ Add / edit category</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Modal</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/admin-panel.js"></script>
+</body>
+</html>

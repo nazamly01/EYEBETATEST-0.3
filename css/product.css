@@ -1,0 +1,280 @@
+.product-page { max-width: 1200px; margin: 0 auto; padding: calc(var(--nav-h) + 48px) 48px 80px; }
+body.has-marquee .product-page { padding-top: calc(var(--nav-h) + 36px + 48px); }
+
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.pd-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.pd-size-specs {
+  border: 1px solid var(--gray-200);
+  padding: 16px 18px;
+  background: var(--gray-100);
+}
+.pd-specs-title {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 10px;
+}
+.pd-specs-table {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+  font-weight: 300;
+}
+.pd-specs-table th {
+  text-align: left;
+  color: var(--gray-500);
+  font-weight: 400;
+  width: 38%;
+  padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: top;
+}
+.pd-specs-table td {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--gray-200);
+  color: var(--white);
+}
+.pd-size.pd-size-na {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pd-gallery {
+  position: relative;
+  background: var(--gray-100);
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+}
+.pd-gallery-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+.pd-gallery-slide {
+  min-width: 100%;
+  height: 100%;
+}
+.pd-gallery-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.pd-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.45);
+  color: var(--white);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  transition: var(--transition-fast);
+}
+.pd-arrow:hover { background: rgba(0,0,0,0.7); }
+.pd-arrow.prev { left: 12px; }
+.pd-arrow.next { right: 12px; }
+.pd-gallery.multi .pd-arrow { display: flex; }
+
+.pd-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+.pd-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.pd-dot.active { background: var(--white); }
+
+.pd-info h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 300;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.pd-meta {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+}
+.pd-price {
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  margin-bottom: 28px;
+}
+.pd-price-old {
+  text-decoration: line-through;
+  opacity: 0.6;
+  margin-right: 10px;
+  font-size: 16px;
+}
+.pd-price-new {
+  color: var(--white);
+  font-weight: 500;
+}
+.pd-desc {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--gray-700);
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.pd-ship-card {
+  border: 1px solid var(--gray-200);
+  background: var(--gray-100);
+  padding: 20px 22px 18px;
+  margin-bottom: 32px;
+}
+.pd-ship-card-simple .pd-ship-lead { margin-bottom: 0; }
+.pd-ship-title {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+.pd-ship-lead {
+  font-size: 12px;
+  color: var(--gray-500);
+  font-weight: 300;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+.pd-ship-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px 16px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.pd-ship-lbl {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+}
+.pd-ship-select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  background: var(--black);
+  border: 1px solid var(--gray-200);
+  color: var(--white);
+  outline: none;
+}
+.pd-ship-select:focus { border-color: var(--gray-300); }
+.pd-ship-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gray-200);
+}
+.pd-ship-result-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+.pd-ship-result-value {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--white);
+}
+.pd-ship-note {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin: 10px 0 0;
+  font-weight: 300;
+  line-height: 1.45;
+}
+.pd-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 14px;
+}
+.pd-sizes { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.pd-availability {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: var(--gray-500);
+}
+.pd-availability-in { color: #7a9e7a; }
+.pd-availability-out { color: #c08080; }
+.pd-size {
+  min-width: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--gray-200);
+  background: transparent;
+  color: var(--white);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.pd-size:hover, .pd-size.selected {
+  border-color: var(--white);
+  background: var(--white);
+  color: var(--black);
+}
+.pd-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.pd-back {
+  display: inline-block;
+  margin-top: 40px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  text-decoration: none;
+}
+.pd-back:hover { color: var(--white); }
+
+@media (max-width: 900px) {
+  .product-detail-grid { grid-template-columns: 1fr; gap: 40px; }
+  .product-page { padding: calc(var(--nav-h) + 32px) 20px 60px; }
+  .pd-ship-row { grid-template-columns: 1fr; gap: 6px; }
+}

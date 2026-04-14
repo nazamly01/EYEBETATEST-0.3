@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>𝐬𝐡𝐨𝐩 𝐚𝐥𝐥 - 𝐄𝐘𝐄ᵀᴹ </title>
+<link rel="icon" type="image/png" href="pics/1.png">
+<link rel="stylesheet" href="css/shared.css" />
+<link rel="stylesheet" href="css/shop.css" />
+</head>
+<body>
+<div id="pageLoader" class="page-loader"><div class="loader-logo">eye</div><div class="loader-bar"></div></div>
+<div id="navbar-container"></div>
+
+<div class="shop-hero" id="shopHeroRoot">
+  <div class="shop-hero-bg" id="shopHeroBg" aria-hidden="true"></div>
+  <div class="shop-hero-scrim"></div>
+  <div class="shop-hero-content">
+    <h1>All <em>Products</em></h1>
+    <p id="shopSubtitle">Explore the full collection</p>
+  </div>
+</div>
+
+<div class="shop-layout">
+  <aside class="sidebar" id="shopFiltersSidebar">
+    <button type="button" class="shop-filters-toggle" id="shopFiltersToggle" onclick="toggleShopFilters()" aria-label="Toggle filters">
+      <span class="shop-filters-icon" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="4" y1="6" x2="20" y2="6"></line>
+          <circle cx="9" cy="6" r="1.8"></circle>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <circle cx="15" cy="12" r="1.8"></circle>
+          <line x1="4" y1="18" x2="20" y2="18"></line>
+          <circle cx="11" cy="18" r="1.8"></circle>
+        </svg>
+      </span>
+    </button>
+    <div class="shop-filters-panel" id="shopFiltersPanel">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Category</div>
+      <div id="categoryFilters"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Price Range</div>
+      <div class="price-inputs">
+        <input type="number" id="priceMin" placeholder="Min" value="0" onchange="filterChange()" />
+        <span class="price-sep">—</span>
+        <input type="number" id="priceMax" placeholder="Max" value="999999" onchange="filterChange()" />
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Size</div>
+      <div class="size-filters" id="sizeFilters">
+        <button type="button" class="size-btn" onclick="toggleSize(this)">XS</button>
+        <button type="button" class="size-btn" onclick="toggleSize(this)">S</button>
+        <button type="button" class="size-btn" onclick="toggleSize(this)">M</button>
+        <button type="button" class="size-btn" onclick="toggleSize(this)">L</button>
+        <button type="button" class="size-btn" onclick="toggleSize(this)">XL</button>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <button type="button" class="btn btn-outline" onclick="clearFilters()" style="width:100%">Clear Filters</button>
+    </div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="shop-topbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search products..." oninput="filterChange()" />
+      </div>
+      <div class="shop-mobile-controls">
+        <button type="button" class="shop-filters-toggle shop-filters-toggle-compact" id="shopFiltersTopToggle" onclick="toggleShopFilters()" aria-label="Toggle filters">
+          <span class="shop-filters-icon" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <line x1="4" y1="6" x2="20" y2="6"></line>
+              <circle cx="9" cy="6" r="1.8"></circle>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <circle cx="15" cy="12" r="1.8"></circle>
+              <line x1="4" y1="18" x2="20" y2="18"></line>
+              <circle cx="11" cy="18" r="1.8"></circle>
+            </svg>
+          </span>
+        </button>
+        <select class="sort-select sort-select-compact" id="sortSelect" onchange="filterChange()">
+          <option value="newest">Newest</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+        </select>
+      </div>
+      <span class="results-count" id="resultsCount">—</span>
+    </div>
+    <div id="activeFilters" class="active-filters"></div>
+    <div class="products-grid" id="productsGrid"></div>
+  </main>
+</div>
+
+<div id="footer-container"></div>
+<div class="toast" id="toast"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/shop.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>𝐌𝐲 𝐏𝐫𝐨𝐟𝐢𝐥𝐞 - 𝐄𝐘𝐄ᵀᴹ</title>
+<link rel="icon" type="image/png" href="pics/1.png">
+<link rel="stylesheet" href="css/shared.css" />
+<link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+<div id="pageLoader" class="page-loader"><div class="loader-logo">eye</div><div class="loader-bar"></div></div>
+<div id="navbar-container"></div>
+
+<div class="profile-wrap">
+  <div class="profile-header">
+    <div class="profile-header-left">
+      <div class="profile-avatar" id="profileAvatar">N</div>
+      <div class="profile-name" id="profileName">—</div>
+      <div class="profile-email" id="profileEmail">—</div>
+      <div class="profile-role" id="profileRoleBadge">Customer</div>
+    </div>
+    <div class="profile-header-actions">
+      <a href="admin.html" id="profileAdminLink" class="btn btn-gold profile-admin-link" style="display:none">Admin panel</a>
+      <a href="orders.html" class="btn btn-outline">My orders</a>
+      <button type="button" class="btn btn-outline" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="profile-stats">
+    <div class="ps-item"><div class="ps-num" id="statOrders">0</div><div class="ps-label">Total Orders</div></div>
+    <div class="ps-item"><div class="ps-num" id="statSpend">—</div><div class="ps-label">Total Spent</div></div>
+    <div class="ps-item"><div class="ps-num" id="statWishlist">0</div><div class="ps-label">Saved Items</div></div>
+  </div>
+
+  <div class="profile-grid">
+    <div class="profile-card">
+      <div class="profile-card-title">Personal Information</div>
+      <div class="info-field">
+        <div class="info-label">Full Name</div>
+        <input class="info-input" id="editName" type="text" />
+      </div>
+      <div class="info-field">
+        <div class="info-label">Email Address</div>
+        <input class="info-input" id="editEmail" type="email" readonly title="Email is managed by your sign-in account" />
+      </div>
+      <div class="info-field">
+        <div class="info-label">Phone</div>
+        <input class="info-input" id="editPhone" type="tel" />
+      </div>
+      <div class="info-field">
+        <div class="info-label">Delivery Address</div>
+        <input class="info-input" id="editAddress" type="text" />
+      </div>
+      <div class="edit-actions">
+        <button type="button" class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+        <button type="button" class="btn btn-outline" onclick="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="profile-card" style="margin-bottom:24px">
+        <div class="profile-card-title">Recent Orders</div>
+        <div id="ordersPreview"></div>
+        <div style="margin-top:20px">
+          <a href="orders.html" class="btn btn-outline" style="width:100%;text-align:center;display:block">View All Orders</a>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-card-title">Saved Items</div>
+        <div class="wishlist-grid" id="wishlistGrid"></div>
+        <div id="wishlistEmpty" style="display:none;text-align:center;padding:20px 0;color:var(--gray-500);font-size:13px;font-family:var(--font-serif)">No saved items yet</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-container"></div>
+<div class="toast" id="toast"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>
