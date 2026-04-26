@@ -124,8 +124,7 @@ function renderCart() {
         <div id="couponMsg"></div>
         <div class="summary-row"><span>Subtotal</span><span>${formatPrice(subtotal)}</span></div>
         ${discount > 0 ? `<div class="summary-row" style="color:#8fd9a8"><span>Discount (${escapeHtml(appliedCoupon.code)})</span><span>−${formatPrice(discount)}</span></div>` : ''}
-        <div class="summary-row"><span>Shipping</span><span>${shipping === 0 ? 'Free' : formatPrice(shipping)}</span></div>
-        ${shipping > 0 ? `<div style="font-size:10px;letter-spacing:.1em;color:var(--gray-500);margin:-8px 0 16px;text-align:right">${shipNote()}</div>` : ''}
+
         <div class="summary-divider"></div>
         <div class="summary-row total"><span>Total</span><span>${formatPrice(total)}</span></div>
         <button type="button" class="btn btn-primary checkout-btn" onclick="openCheckoutModal()">Proceed to Checkout</button>
