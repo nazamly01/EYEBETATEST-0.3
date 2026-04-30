@@ -222,8 +222,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3) Featured products after that.
     const products = await productsPromise;
     __homeProducts = products || [];
-    const configuredLimit = Number(feat.limit) > 0 ? Number(feat.limit) : 4;
-    const limit = isMobile ? Math.min(configuredLimit, 3) : configuredLimit;
+    const configuredLimit = Number(feat.limit) > 0 ? Number(feat.limit) : 12;
+    const limit = Math.max(configuredLimit, 12);
     const featured = __homeProducts.slice(0, limit);
     renderFeaturedProgressive(featured);
 
