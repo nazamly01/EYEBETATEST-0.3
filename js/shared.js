@@ -307,7 +307,7 @@ function renderNavbar(activePage, links, brandWordmark, isAdmin) {
       ${adminLi}
     </ul>
     <div class="nav-actions">
-    <button class="nav-icon" onclick="location.href='Policy.html'" type="button" title="Policy">
+    <button class="nav-icon" onclick="location.href='Return and Exchange Policy.html'" type="button" title="Policy">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M9 3h6l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
     <path d="M9 3v5h6"/>
