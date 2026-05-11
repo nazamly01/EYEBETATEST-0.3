@@ -432,9 +432,22 @@ function renderFooter(navRows, hp) {
 }
 
 function renderBackendMissingBanner() {
-  return `<div class="navbar" style="justify-content:center;padding:20px;letter-spacing:.06em;font-size:13px;color:var(--gray-500)">
-    Supabase is not configured. Set <code style="color:var(--gold)">EYE_SUPABASE_URL</code> and <code style="color:var(--gold)">EYE_SUPABASE_ANON_KEY</code> in <strong>js/config.js</strong>, apply SQL in <strong>supabase/</strong>, then reload.
-  </div>`;
+
+  if (!sessionStorage.getItem("backend_refresh")) {
+
+    sessionStorage.setItem("backend_refresh", "true");
+
+    setTimeout(() => {
+      location.reload();
+    }, 2000);
+
+  }
+
+  return `
+    <div class="navbar" style="justify-content:center;padding:20px;">
+      Reconnecting...
+    </div>
+  `;
 }
 
 async function mountStandardShell(activePage) {
