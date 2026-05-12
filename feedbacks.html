@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Customer Reviews — 𝐄𝐘𝐄ᵀᴹ</title>
+<meta name="description" content="Read and share customer reviews for EYE™. Discover what our customers love about our luxury collection." />
+<link rel="icon" type="image/png" href="pics/1.png">
+<link rel="stylesheet" href="css/shared.css" />
+<link rel="stylesheet" href="css/feedback.css" />
+</head>
+<body>
+
+<div id="pageLoader" class="page-loader"><div class="loader-logo">eye</div><div class="loader-bar"></div></div>
+
+<div id="navbar-container"></div>
+
+<main class="feedbacks-page">
+
+  <!-- Hero -->
+  <div class="feedbacks-hero">
+    <span class="page-label">Verified Reviews</span>
+    <h1>Customer <em>Voices</em></h1>
+    <p>Real experiences from people who love what we create. Every review matters.</p>
+  </div>
+
+  <!-- Reviews grid -->
+  <div class="feedbacks-grid" id="feedbacksGrid">
+    <div class="feedback-empty">Loading reviews…</div>
+  </div>
+
+  <!-- Submit form section -->
+  <div class="feedback-submit-section">
+    <div class="feedback-form-card" id="feedbackFormCard">
+      <div class="feedback-form-title">Share Your Experience</div>
+      <p class="feedback-form-sub">Only customers who have placed an order can leave a review. Your honest feedback helps us grow.</p>
+
+      <!-- Not signed in -->
+      <div id="feedbackNotSignedIn" style="display:none">
+        <div class="feedback-access-notice">
+          <p>You need to be signed in to leave a review.</p>
+          <a href="login.html?return=feedbacks.html" class="btn btn-gold" style="text-decoration:none">Sign In</a>
+        </div>
+      </div>
+
+      <!-- No order / not eligible -->
+      <div id="feedbackNotEligible" style="display:none">
+        <div class="feedback-access-notice">
+          <p>Only customers who have completed an order can submit a review. Place an order and come back!</p>
+          <a href="shop.html" class="btn btn-outline" style="text-decoration:none;font-size:11px;letter-spacing:.2em">Shop Now</a>
+        </div>
+      </div>
+
+      <!-- The form -->
+      <form id="feedbackForm" style="display:none" onsubmit="submitReview(event)">
+
+        <div class="feedback-form-group">
+          <label class="feedback-form-label">Your Name *</label>
+          <input class="feedback-form-input" id="fbName" type="text" required placeholder="How you'd like to appear" />
+        </div>
+
+        <div class="feedback-form-group">
+          <label class="feedback-form-label">Rating *</label>
+          <div class="star-rating-input" id="starRatingInput">
+            <button type="button" class="star-btn" data-v="1">★</button>
+            <button type="button" class="star-btn" data-v="2">★</button>
+            <button type="button" class="star-btn" data-v="3">★</button>
+            <button type="button" class="star-btn" data-v="4">★</button>
+            <button type="button" class="star-btn" data-v="5">★</button>
+          </div>
+          <input type="hidden" id="fbRating" value="5" />
+        </div>
+
+        <div class="feedback-form-group">
+          <label class="feedback-form-label">Your Review *</label>
+          <textarea class="feedback-form-textarea" id="fbComment" required placeholder="Tell us about your experience…" rows="4"></textarea>
+        </div>
+
+        <div class="feedback-form-group">
+          <label class="feedback-form-label">Photo (optional)</label>
+          <label class="feedback-upload-label">
+            <input type="file" id="fbImage" accept="image/*" style="display:none" onchange="previewFeedbackImage(this)" />
+            <span class="feedback-upload-icon">📎</span>
+            <span class="feedback-upload-text" id="fbImageLabel">Attach a photo</span>
+          </label>
+          <div class="feedback-upload-preview" id="fbImagePreview"></div>
+        </div>
+
+        <button type="submit" class="btn btn-gold" id="fbSubmitBtn" style="width:100%;padding:16px;margin-top:8px">Submit Review</button>
+        <div id="fbMsg" style="margin-top:12px;font-size:13px;text-align:center"></div>
+      </form>
+    </div>
+  </div>
+
+</main>
+
+<div id="footer-container"></div>
+<div class="toast" id="toast"></div>
+
+<!-- Mobile Sidebar -->
+<div class="mobile-sidebar" id="mobileSidebar">
+  <div class="sidebar-logo-wrap">
+    <div class="sidebar-logo">{ 𝐄𝐘𝐄ᵀᴹ }</div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script><script src="js/analytics.js"></script>
+<script src="js/shared.js"></script>
+<script>
+/* ── Feedbacks page JS ─────────────────────────── */
+let _selectedRating = 5;
+
+function renderFeedbackCardFull(f) {
+  const imgBlock = f.image_url
+    ? `<img src="${escapeHtml(f.image_url)}" class="feedback-card-img" alt="" loading="lazy" />`
+    : '';
+  const initial = (f.author_name || 'A').charAt(0).toUpperCase();
+  const dateStr = f.created_at
+    ? new Date(f.created_at).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+    : '';
+  const starsHtml = '★'.repeat(f.rating).split('').map(() => '<span class="star">★</span>').join('')
+    + '★'.repeat(5 - f.rating).split('').map(() => '<span class="star empty">★</span>').join('');
+  return `
+    <div class="feedback-card">
+      ${imgBlock}
+      <div class="feedback-stars">${starsHtml}</div>
+      <p class="feedback-comment" style="-webkit-line-clamp:unset">${escapeHtml(f.comment || '')}</p>
+      <div class="feedback-meta">
+        <div class="feedback-avatar">${escapeHtml(initial)}</div>
+        <div>
+          <div class="feedback-name">${escapeHtml(f.author_name || 'Customer')}</div>
+          <div class="feedback-date">${dateStr}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function loadReviews() {
+  const grid = document.getElementById('feedbacksGrid');
+  if (!grid) return;
+  try {
+    const feedbacks = await EyeApi.fetchFeedbacks();
+    if (!feedbacks || !feedbacks.length) {
+      grid.innerHTML = '<div class="feedback-empty">No reviews yet — be the first to share your experience!</div>';
+      return;
+    }
+    grid.innerHTML = feedbacks.map(renderFeedbackCardFull).join('');
+  } catch (_) {
+    grid.innerHTML = '<div class="feedback-empty">Could not load reviews. Please try again later.</div>';
+  }
+}
+
+async function initFeedbackFormAccess() {
+  try {
+    const user = await EyeApi.fetchMyProfile();
+    if (!user) {
+      document.getElementById('feedbackNotSignedIn').style.display = 'block';
+      return;
+    }
+
+    // Pre-fill name from profile
+    const nameInput = document.getElementById('fbName');
+    if (nameInput && user.name) nameInput.value = user.name;
+
+    // Check if they have any order
+    const orders = await EyeApi.fetchOrders().catch(() => []);
+    const hasOrder = Array.isArray(orders) && orders.some(o =>
+      ['Pending','Processing','Shipped','Delivered'].includes(o.status)
+    );
+
+    if (!hasOrder) {
+      document.getElementById('feedbackNotEligible').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('feedbackForm').style.display = 'block';
+    initStarRating();
+  } catch (_) {
+    document.getElementById('feedbackNotSignedIn').style.display = 'block';
+  }
+}
+
+function initStarRating() {
+  const btns = document.querySelectorAll('.star-btn');
+  const setRating = (val) => {
+    _selectedRating = val;
+    document.getElementById('fbRating').value = val;
+    btns.forEach(b => b.classList.toggle('active', Number(b.dataset.v) <= val));
+  };
+  setRating(5);
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => setRating(Number(btn.dataset.v)));
+    btn.addEventListener('mouseenter', () => {
+      btns.forEach(b => b.classList.toggle('hover', Number(b.dataset.v) <= Number(btn.dataset.v)));
+    });
+    btn.addEventListener('mouseleave', () => {
+      btns.forEach(b => b.classList.remove('hover'));
+    });
+  });
+}
+
+function previewFeedbackImage(input) {
+  const preview = document.getElementById('fbImagePreview');
+  const label = document.getElementById('fbImageLabel');
+  const file = input.files?.[0];
+  if (!file || !preview) return;
+  const url = URL.createObjectURL(file);
+  preview.innerHTML = `<img src="${url}" alt="Preview" />`;
+  if (label) label.textContent = '✓ ' + file.name;
+}
+
+async function submitReview(e) {
+  e.preventDefault();
+  const btn = document.getElementById('fbSubmitBtn');
+  const msg = document.getElementById('fbMsg');
+  const name = document.getElementById('fbName').value.trim();
+  const rating = Number(document.getElementById('fbRating').value) || 5;
+  const comment = document.getElementById('fbComment').value.trim();
+  const fileEl = document.getElementById('fbImage');
+  const file = fileEl?.files?.[0];
+
+  if (!name || !comment) { msg.textContent = 'Please fill in all required fields.'; msg.style.color = '#e57373'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  msg.textContent = '';
+
+  try {
+    let imageUrl = null;
+    if (file) {
+      btn.textContent = 'Uploading image…';
+      const up = await EyeApi.uploadFeedbackImageBlob(file, file.type);
+      if (up.ok) imageUrl = up.url;
+    }
+
+    const res = await EyeApi.submitFeedback({ author_name: name, rating, comment, image_url: imageUrl });
+    if (!res.ok) throw new Error(res.error || 'Submission failed');
+
+    msg.textContent = 'Thank you! Your review is pending approval.';
+    msg.style.color = 'var(--gold)';
+    e.target.reset();
+    document.getElementById('fbImagePreview').innerHTML = '';
+    document.getElementById('fbImageLabel').textContent = 'Attach a photo';
+    initStarRating();
+  } catch (err) {
+    msg.textContent = err.message || 'Something went wrong. Please try again.';
+    msg.style.color = '#e57373';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Submit Review';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await mountStandardShell('feedbacks');
+    await Promise.all([loadReviews(), initFeedbackFormAccess()]);
+  } finally {
+    initLoader();
+  }
+});
+</script>
+
+</body>
+</html>

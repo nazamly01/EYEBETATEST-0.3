@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Order Detail — 𝐄𝐘𝐄 𝐒𝐲𝐬𝐭𝐞𝐦ᵀᴹ</title>
+<link rel="icon" type="image/png" href="pics/1.png">
+<link rel="stylesheet" href="css/shared.css" />
+<link rel="stylesheet" href="css/admin.css" />
+<style>
+/* ── Order Detail Page ───────────────────────────── */
+.order-page-wrap { max-width: 1100px; margin: 0 auto; }
+.order-back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--gray-500); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; text-decoration: none;
+  margin-bottom: 32px; transition: var(--transition-fast);
+}
+.order-back-link:hover { color: var(--gold); }
+.order-page-title {
+  font-family: var(--font-serif); font-size: 42px; font-weight: 300;
+  color: var(--white); margin-bottom: 4px; letter-spacing: .02em;
+}
+.order-page-subtitle {
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--gray-500); margin-bottom: 40px;
+}
+.order-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+}
+@media(max-width:900px){ .order-detail-layout { grid-template-columns:1fr; } }
+
+/* Info sections */
+.od-section { background: var(--gray-100); border: 1px solid var(--gray-200); margin-bottom: 24px; }
+.od-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px; border-bottom: 1px solid var(--gray-200);
+}
+.od-section-title {
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  font-weight: 500; color: var(--gold);
+}
+.od-section-body { padding: 24px 28px; }
+
+/* Customer info grid */
+.od-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px;
+}
+.od-info-item {}
+.od-info-label {
+  font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gray-500); margin-bottom: 6px; display: block;
+}
+.od-info-val {
+  font-size: 15px; color: var(--white); line-height: 1.5;
+  font-weight: 400;
+}
+.od-info-val.large { font-family: var(--font-serif); font-size: 32px; color: var(--gold); }
+
+/* Status controls */
+.od-status-row {
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+}
+.od-select-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+.od-select-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--gray-500); }
+
+/* Payment proof */
+.proof-container {
+  background: var(--gray-200); border: 1px solid var(--gray-300);
+  border-radius: 2px; overflow: hidden; position: relative;
+  cursor: zoom-in; transition: all .3s;
+}
+.proof-container:hover { border-color: var(--gold); }
+.proof-container img {
+  width: 100%; display: block; max-height: 300px; object-fit: contain;
+  background: #0a0a0a;
+}
+.proof-zoom-hint {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.8));
+  padding: 20px 16px 12px;
+  font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--gold); text-align: center; opacity: 0; transition: .3s;
+}
+.proof-container:hover .proof-zoom-hint { opacity: 1; }
+
+/* Line items */
+.od-line { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--gray-200); }
+.od-line:last-child { border-bottom: none; }
+.od-line-img { width: 80px; height: 100px; flex-shrink: 0; background: var(--gray-200); overflow: hidden; }
+.od-line-img img { width: 100%; height: 100%; object-fit: cover; }
+.od-line-info { flex: 1; }
+.od-line-name { font-family: var(--font-serif); font-size: 18px; color: var(--white); margin-bottom: 6px; }
+.od-line-meta { font-size: 12px; color: var(--gray-500); letter-spacing: .04em; line-height: 1.6; }
+.od-line-price { font-family: var(--font-serif); font-size: 16px; color: var(--white); white-space: nowrap; }
+
+/* Totals sidebar card */
+.od-totals-card { background: var(--gray-100); border: 1px solid var(--gray-200); padding: 28px; }
+.od-totals-title { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+.od-total-line { display: flex; justify-content: space-between; margin-bottom: 14px; font-size: 13px; color: var(--gray-700); }
+.od-total-line.grand { font-family: var(--font-serif); font-size: 22px; color: var(--white); margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--gray-200); margin-bottom: 0; }
+.od-total-line.disc { color: #8fd9a8; }
+.od-save-btn { width: 100%; margin-top: 24px; }
+
+/* Print zoom overlay */
+#proofZoomOverlay { position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);cursor:zoom-out; }
+#proofZoomOverlay img { max-width:90vw;max-height:86vh;object-fit:contain;border:1px solid rgba(201,168,76,.3);box-shadow:0 0 100px rgba(0,0,0,.9); }
+#proofZoomOverlay .zoom-close { position:absolute;top:24px;right:24px;width:44px;height:44px;background:var(--gold);border:none;color:#000;font-size:22px;cursor:pointer;border-radius:50%;font-weight:bold;line-height:1; }
+#proofZoomOverlay .zoom-open { position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none; }
+</style>
+</head>
+<body>
+<div id="pageLoader" class="page-loader"><div class="loader-logo">eye</div><div class="loader-bar"></div></div>
+
+<div class="admin-wrap" id="adminWrap" style="display:none">
+  <aside class="admin-sidebar">
+    <div class="admin-logo">eye <span>ADMIN</span></div>
+    <a class="admin-home-link" href="index.html" title="Storefront home">← Home</a>
+    <nav class="admin-nav">
+      <div class="admin-nav-section-label">Overview</div>
+      <div class="admin-nav-item" onclick="location.href='admin.html'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="admin-nav-item" onclick="location.href='admin.html#analytics'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 12l4-4 4 4 6-6"/></svg>
+        Analytics
+      </div>
+      <div class="admin-nav-section-label">Catalog</div>
+      <div class="admin-nav-item" onclick="location.href='admin.html#products'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+        Products
+      </div>
+      <div class="admin-nav-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        Orders
+      </div>
+      <div class="admin-nav-item" onclick="location.href='admin.html#coupons'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Coupons
+      </div>
+      <div class="admin-nav-section-label">Operations</div>
+      <div class="admin-nav-item" onclick="location.href='admin.html#shipping'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 16 11 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Shipping
+      </div>
+      <div class="admin-nav-item" onclick="location.href='admin.html#accounting'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Accounting
+      </div>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="admin.html" style="display:block;color:var(--gray-500);font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:var(--transition-fast)" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray-500)'">← Back to Admin</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="order-page-wrap">
+      <a href="admin.html" class="order-back-link" id="backToOrders">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+        Back to Orders
+      </a>
+
+      <div id="orderPageContent">
+        <div style="text-align:center;padding:80px;color:var(--gray-500)">Loading order…</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Proof Zoom Overlay -->
+<div id="proofZoomOverlay" style="display:none">
+  <button class="zoom-close" onclick="closeProofZoom()">✕</button>
+  <img id="proofZoomImg" src="" alt="Payment proof" />
+  <a id="proofZoomLink" href="" target="_blank" class="zoom-open">Open full size ↗</a>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/shared.js"></script>
+<script>
+function openProofZoom(url) {
+  const ov = document.getElementById('proofZoomOverlay');
+  document.getElementById('proofZoomImg').src = url;
+  document.getElementById('proofZoomLink').href = url;
+  ov.style.display = 'flex';
+  ov.onclick = (e) => { if (e.target === ov) closeProofZoom(); };
+}
+function closeProofZoom() {
+  document.getElementById('proofZoomOverlay').style.display = 'none';
+}
+
+function extractOrderInfo(addressStr) {
+  const result = { name: '', phone: '', email: '', address: '' };
+  if (!addressStr) return result;
+  const nm = addressStr.match(/Username:\s*([^|]+)/);
+  const ph = addressStr.match(/Phone:\s*([^|]+)/);
+  const em = addressStr.match(/Email:\s*([^|]+)/);
+  const ad = addressStr.match(/Address:\s*(.+)$/);
+  if (nm) result.name = nm[1].trim();
+  if (ph) result.phone = ph[1].trim();
+  if (em) result.email = em[1].trim();
+  if (ad) result.address = ad[1].trim();
+  else result.address = addressStr;
+  return result;
+}
+
+function statusBadge(s) {
+  const map = { Pending: 'yellow', Processing: 'blue', Shipped: 'green', Delivered: 'gray', Returned: 'red' };
+  return `<span class="badge badge-${map[s] || 'gray'}">${escapeHtml(s)}</span>`;
+}
+function paymentBadge(s) {
+  const k = (s || 'pending').toLowerCase().replace(/\s+/g,'');
+  const cls = k==='paid'?'pay-paid':k==='failed'?'pay-failed':k==='refunded'?'pay-refunded':'pay-pending';
+  return `<span class="pay-status ${cls}">${escapeHtml(s || 'Pending')}</span>`;
+}
+function paymentMethodPill(m) {
+  const v = String(m || '').toLowerCase();
+  if (v.includes('telda')) return '<span class="pay-method pay-method-telda">Telda</span>';
+  if (v.includes('insta')) return '<span class="pay-method pay-method-insta">InstaPay</span>';
+  if (v.includes('cash')) return '<span class="pay-method pay-method-cod">COD</span>';
+  if (v.includes('online')) return '<span class="pay-method pay-method-online">Online Wallet</span>';
+  return `<span class="pay-method pay-method-other">${escapeHtml(m || '—')}</span>`;
+}
+
+async function loadOrderPage() {
+  const params = new URLSearchParams(location.search);
+  const orderId = params.get('id');
+  if (!orderId) {
+    document.getElementById('orderPageContent').innerHTML = '<div style="text-align:center;padding:80px;color:#e05c6a">No order ID provided.</div>';
+    return;
+  }
+
+  const orders = await EyeApi.fetchOrders();
+  const o = orders.find(x => String(x.id) === String(orderId));
+  if (!o) {
+    document.getElementById('orderPageContent').innerHTML = `<div style="text-align:center;padding:80px;color:#e05c6a">Order not found: ${escapeHtml(orderId)}</div>`;
+    return;
+  }
+
+  const users = await EyeApi.fetchUsers();
+  const u = users.find(x => String(x.id) === String(o.userId || o.user_id));
+  const info = extractOrderInfo(o.address);
+  const displayName = info.name || u?.name || '—';
+  const displayPhone = info.phone || u?.phone || '—';
+  const displayEmail = info.email || u?.email || '—';
+  const displayAddress = info.address || o.address || '—';
+
+  const items = Array.isArray(o.items) ? o.items : [];
+  const lineItems = items.map(it => `
+    <div class="od-line">
+      <div class="od-line-img">
+        ${it.image ? `<img src="${escapeHtml(it.image)}" alt="${escapeHtml(it.name)}" loading="lazy">` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--gray-500);font-size:10px">No Image</div>'}
+      </div>
+      <div class="od-line-info">
+        <div class="od-line-name">${escapeHtml(it.name || 'Item')}</div>
+        <div class="od-line-meta">
+          ${it.size ? `Size: <strong style="color:var(--white)">${escapeHtml(it.size)}</strong> &nbsp;·&nbsp; ` : ''}
+          Qty: <strong style="color:var(--white)">${escapeHtml(String(it.qty || 1))}</strong> &nbsp;·&nbsp;
+          Unit price: <strong style="color:var(--white)">${formatPrice(it.price)}</strong>
+        </div>
+        <div style="margin-top:8px;font-family:var(--font-serif);font-size:14px;color:var(--gold)">${formatPrice((it.price || 0) * (it.qty || 1))}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const hasProof = o.payment_proof_url && String(o.payment_proof_url).toLowerCase() !== 'null' && String(o.payment_proof_url).toLowerCase() !== 'undefined';
+  const proofSection = hasProof ? `
+    <div class="od-section">
+      <div class="od-section-head">
+        <span class="od-section-title">Payment Proof</span>
+        <a href="${escapeHtml(o.payment_proof_url)}" target="_blank" class="btn btn-outline" style="padding:6px 14px;font-size:10px">Open Original ↗</a>
+      </div>
+      <div class="od-section-body" style="padding:0">
+        <div class="proof-container" onclick="openProofZoom('${escapeHtml(o.payment_proof_url)}')">
+          <img src="${escapeHtml(o.payment_proof_url)}" alt="Payment screenshot" loading="lazy" />
+          <div class="proof-zoom-hint">🔍 Click to zoom</div>
+        </div>
+      </div>
+    </div>
+  ` : '';
+
+  document.getElementById('orderPageContent').innerHTML = `
+    <div class="order-page-title">${escapeHtml(o.id)}</div>
+    <div class="order-page-subtitle">${formatDate(o.date || o.created_at)} &nbsp;·&nbsp; ${o.items?.length || 0} item${(o.items?.length || 0) !== 1 ? 's' : ''}</div>
+
+    <div class="order-detail-layout">
+      <!-- LEFT COLUMN -->
+      <div>
+        <!-- Customer Info -->
+        <div class="od-section">
+          <div class="od-section-head"><span class="od-section-title">Customer Information</span></div>
+          <div class="od-section-body">
+            <div class="od-info-grid">
+              <div class="od-info-item">
+                <span class="od-info-label">Name</span>
+                <div class="od-info-val">${escapeHtml(displayName)}</div>
+              </div>
+              <div class="od-info-item">
+                <span class="od-info-label">Phone</span>
+                <div class="od-info-val">${escapeHtml(displayPhone)}</div>
+              </div>
+              <div class="od-info-item">
+                <span class="od-info-label">Email</span>
+                <div class="od-info-val" style="font-size:13px;color:var(--gray-500)">${escapeHtml(displayEmail)}</div>
+              </div>
+              <div class="od-info-item">
+                <span class="od-info-label">Shipping Address</span>
+                <div class="od-info-val" style="font-size:13px;line-height:1.7">${escapeHtml(displayAddress)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Line Items -->
+        <div class="od-section">
+          <div class="od-section-head"><span class="od-section-title">Line Items (${items.length})</span></div>
+          <div class="od-section-body">
+            ${lineItems || '<p style="color:var(--gray-500)">No items.</p>'}
+          </div>
+        </div>
+
+        <!-- Payment Proof -->
+        ${proofSection}
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div>
+        <!-- Order Summary -->
+        <div class="od-totals-card" style="margin-bottom:24px">
+          <div class="od-totals-title">Order Summary</div>
+          <div class="od-total-line"><span>Subtotal</span><span style="font-family:var(--font-serif)">${formatPrice(o.subtotal ?? o.total)}</span></div>
+          ${Number(o.discount) > 0 ? `<div class="od-total-line disc"><span>Discount</span><span style="font-family:var(--font-serif)">−${formatPrice(o.discount)}</span></div>` : ''}
+          <div class="od-total-line"><span>Shipping</span><span style="font-family:var(--font-serif)">${Number(o.shipping) === 0 ? 'Free' : formatPrice(o.shipping)}</span></div>
+          <div class="od-total-line grand"><span>Total</span><span>${formatPrice(o.total)}</span></div>
+        </div>
+
+        <!-- Payment Info -->
+        <div class="od-section" style="margin-bottom:24px">
+          <div class="od-section-head"><span class="od-section-title">Payment</span></div>
+          <div class="od-section-body">
+            <div style="margin-bottom:16px">
+              <span class="od-info-label" style="display:block;margin-bottom:8px">Method</span>
+              ${paymentMethodPill(o.payment_method)}
+            </div>
+            <div>
+              <span class="od-info-label" style="display:block;margin-bottom:8px">Payment Status</span>
+              ${paymentBadge(o.payment_status)}
+            </div>
+          </div>
+        </div>
+
+        <!-- Fulfillment Status -->
+        <div class="od-section">
+          <div class="od-section-head"><span class="od-section-title">Fulfillment Status</span></div>
+          <div class="od-section-body">
+            <div style="margin-bottom:18px">
+              <span class="od-info-label" style="display:block;margin-bottom:8px">Current Status</span>
+              ${statusBadge(o.status)}
+            </div>
+            <div class="od-status-row">
+              <div class="od-select-group">
+                <span class="od-select-label">Update Order Status</span>
+                <select class="status-select" id="orderStatusSel" style="font-size:12px;padding:10px 14px">
+                  ${['Pending','Processing','Shipped','Delivered','Returned'].map(s => `<option ${o.status===s?'selected':''}>${s}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <div class="od-status-row" style="margin-top:14px">
+              <div class="od-select-group">
+                <span class="od-select-label">Update Payment Status</span>
+                <select class="status-select" id="payStatusSel" style="font-size:12px;padding:10px 14px">
+                  ${['Pending','Paid','Failed','Refunded'].map(s => `<option ${(o.payment_status||'Pending')===s?'selected':''}>${s}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-gold od-save-btn" onclick="saveOrderStatus('${escapeHtml(o.id)}')">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function saveOrderStatus(orderId) {
+  const status = document.getElementById('orderStatusSel')?.value;
+  const payStatus = document.getElementById('payStatusSel')?.value;
+  if (status) await EyeApi.updateOrderStatus(orderId, status);
+  if (payStatus) await EyeApi.updateOrderPayment(orderId, payStatus, null);
+  showToast('Order updated ✓');
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await EyeApi.init();
+    if (!EyeApi.isRemote()) return;
+    let { data } = await EyeApi.client.auth.getSession();
+    if (!data.session) {
+      const { data: ref } = await EyeApi.client.auth.refreshSession();
+      if (ref.session) data = ref;
+    }
+    if (!data.session) { location.href = 'login.html?return=admin.html'; return; }
+    const uid = data.session.user.id;
+    const isAdm = await EyeApi.isAdminUid(uid);
+    if (!isAdm) { location.href = 'admin.html'; return; }
+    document.getElementById('adminWrap').style.display = 'flex';
+    await loadOrderPage();
+  } finally {
+    initLoader();
+  }
+});
+</script>
+</body>
+</html>
